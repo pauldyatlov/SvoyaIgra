@@ -28,3 +28,33 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+*/Library/
+*/Temp/
+*/Obj/
+*/.vs/
+*/.idea/
+*/_ReSharper.*/
+*/StreamingAssets/
+
+.DS_Store
+*.csproj
+*.sln
+*.userprefs
+*.unityproj
+*.suo
+*.sln.DotSettings.user
+*.sln.DotSettings
+
+*.sublime-workspace
+/build/
+/build_/
+
+####### IDE plugins #######
+
+# --- JetBrains Rider ---
+**/Plugins/Editor/JetBrains/
+**/Plugins/Editor/JetBrains.meta
+
+# --- Visual Studio Tools for Unity ---
+*/Assets/UnityVS*
