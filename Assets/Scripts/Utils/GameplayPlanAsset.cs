@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.Utils;
-using UnityEngine;
 using UnityEditor;
 
 public class GameplayPlanAsset

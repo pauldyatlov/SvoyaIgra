@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 
-public class PlayerEntity : MonoBehaviour
+public class GamePlayer : MonoBehaviour
 {
     [SerializeField] private Text _playerLabel;
 

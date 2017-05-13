@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public class GameplayPlan : ScriptableObject
@@ -28,4 +27,5 @@ public class QuestionsGameplayPlan
     public string Question;
     public string Answer;
     public Sprite Picture;
+    public QuestionsGameplayPlan CatInPoke;
 }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerStatsEntity : MonoBehaviour
+public class GamePlayerStats : MonoBehaviour
 {
     [SerializeField] private Text _nameLabel;
     [SerializeField] private Text _keycodeLabel;

@@ -3,16 +3,16 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class ThemeEntity : MonoBehaviour
+public class GameTheme : MonoBehaviour
 {
-    [SerializeField] private QuestionEntity _questionTemplate;
+    [SerializeField] private GameQuestion _gameQuestionTemplate;
     [SerializeField] private Text _themeNameLabel;
     [SerializeField] private List<RectTransform> _questionsPlaceholders;
-    [SerializeField] private TaskEntity _taskEntity;
+    [SerializeField] private TaskScreen _taskScreen;
 
-    private readonly List<QuestionEntity> _availableQuestions = new List<QuestionEntity>();
+    private readonly List<GameQuestion> _availableQuestions = new List<GameQuestion>();
 
-    public Action<ThemeEntity, int> _onAvailableQuestionsEnd;
+    public Action<GameTheme, int> _onAvailableQuestionsEnd;
 
     public void Init(RectTransform placeholder, List<QuestionsGameplayPlan> questions, string themeName, List<Player> playersList, int round)
     {
@@ -25,7 +25,7 @@ public class ThemeEntity : MonoBehaviour
         for (var i = 0; i < questions.Count; i++)
         {
             var index = i;
-            var instantiatedQuestion = Instantiate(_questionTemplate);
+            var instantiatedQuestion = Instantiate(_gameQuestionTemplate);
 
             _availableQuestions.Add(instantiatedQuestion);
             instantiatedQuestion.Init(questions[index].Price.ToString(), _questionsPlaceholders[index], () =>
@@ -39,7 +39,7 @@ public class ThemeEntity : MonoBehaviour
 
                 instantiatedQuestion.gameObject.SetActive(false);
 
-                _taskEntity.Show(questions[index]);
+                _taskScreen.Show(questions[index]);
             });
         }
     }

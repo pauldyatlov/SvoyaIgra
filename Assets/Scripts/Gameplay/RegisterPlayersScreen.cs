@@ -4,13 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class AddPlayers : MonoBehaviour
+public class RegisterPlayersScreen : MonoBehaviour
 {
     [SerializeField] private InputField _playerName;
     [SerializeField] private Button _addPlayerButton;
     [SerializeField] private Button _playButton;
 
-    [SerializeField] private PlayerEntity _playerEntityTemplate;
+    [SerializeField] private GamePlayer _playerEntityTemplate;
     [SerializeField] private RectTransform _playersList;
 
     public List<Player> _activePlayers = new List<Player>();
@@ -43,7 +43,7 @@ public class AddPlayers : MonoBehaviour
     {
         while (true)
         {
-            foreach (KeyCode vKey in System.Enum.GetValues(typeof(KeyCode)))
+            foreach (KeyCode vKey in Enum.GetValues(typeof(KeyCode)))
             {
                 if (Input.GetKey(vKey))
                 {
@@ -64,10 +64,5 @@ public class AddPlayers : MonoBehaviour
 
             yield return null;
         }
-    }
-
-    private void ProceedToGameplay()
-    {
-        
     }
 }

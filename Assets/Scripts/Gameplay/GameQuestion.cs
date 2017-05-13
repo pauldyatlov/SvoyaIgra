@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class QuestionEntity : MonoBehaviour
+public class GameQuestion : MonoBehaviour
 {
     [SerializeField] private Button _questionButton;
     [SerializeField] private Text _priceLabel;

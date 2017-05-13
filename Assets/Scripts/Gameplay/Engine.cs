@@ -3,28 +3,29 @@ using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 
 public class Engine : MonoBehaviour
 {
-    [SerializeField] private AddPlayers _addPlayers;
+    [SerializeField] private RegisterPlayersScreen _registerPlayersScreen;
 
-    [SerializeField] private ThemeEntity _themeTemplate;
+    [SerializeField] private GameTheme _themeTemplate;
     [SerializeField] private RectTransform _placeholder;
 
     [SerializeField] private GameplayPlan _gameplayPlan;
 
-    [SerializeField] private PlayerStatsEntity _playerStatsTemplate;
+    [SerializeField] private GamePlayerStats _playerStatsTemplate;
     [SerializeField] private RectTransform _playerStatsPlaceholder;
 
     private int _currentRound;
 
-    private readonly Dictionary<ThemeEntity, int> _themesGameplayPlans = new Dictionary<ThemeEntity, int>();
+    private readonly Dictionary<GameTheme, int> _themesGameplayPlans = new Dictionary<GameTheme, int>();
 
     public static Action<Player> OnPlayerKeycodePressed;
 
     private void Awake()
     {
-        _addPlayers.Init(arg =>
+        _registerPlayersScreen.Init(arg =>
         {
             foreach (var player in arg)
             {
@@ -60,7 +61,7 @@ public class Engine : MonoBehaviour
         });
     }
 
-    private void OnAvailableQuestionsEndHandler(ThemeEntity entity, int round)
+    private void OnAvailableQuestionsEndHandler(GameTheme entity, int round)
     {
         _themesGameplayPlans.Remove(entity);
 
