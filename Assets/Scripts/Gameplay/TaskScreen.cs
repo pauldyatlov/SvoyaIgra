@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class TaskScreen : MonoBehaviour
 {
+    [SerializeField] private AudioSource _audioSource;
+
     [SerializeField] private Text _answeringPlayerLabel;
     [SerializeField] private Text _timerLabel;
     [SerializeField] private Text _label;
@@ -20,6 +22,7 @@ public class TaskScreen : MonoBehaviour
 
     private const int MinTimer = 10;
     private bool _canAcceptAnswers;
+    private Coroutine _timeCoroutine;
 
     private void Awake()
     {
@@ -67,23 +70,31 @@ public class TaskScreen : MonoBehaviour
                     _answeringPlayerLabel.text = "ОТВЕЧАЕТ " + arg.Name;
                     _answeringPlayer = arg;
                 }
-                else
-                {
-                    Debug.Log("Someone else is answering. tsshht!");
-                }
-            }
-            else
-            {
-                Debug.Log("I can't accept answers now");
             }
         };
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F5) && Input.GetKey(KeyCode.LeftControl))
+        {
+            CanAnswerHandler();
+        }
+    }
+
     private void CanAnswerHandler()
     {
-        StartCoroutine(Co_GameplayRoundTimer(MinTimer));
+        if (_timeCoroutine != null) {
+            StopCoroutine(_timeCoroutine);
+        }
+
+        _timeCoroutine = StartCoroutine(Co_GameplayRoundTimer(MinTimer));
 
         _canAnswerButton.gameObject.SetActive(false);
+
+        if (_gameplayPlan.Audio != null) {
+            _audioSource.PlayOneShot(_gameplayPlan.Audio);
+        }
 
         _canAcceptAnswers = true;
     }

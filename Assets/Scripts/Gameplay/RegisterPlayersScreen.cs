@@ -51,7 +51,7 @@ public class RegisterPlayersScreen : MonoBehaviour
                     _activePlayers.Add(player);
 
                     var instantiatedPlayerEntity = Instantiate(_playerEntityTemplate);
-                    instantiatedPlayerEntity.Init(player);
+                    instantiatedPlayerEntity.Init(player, OnPlayerDeletedHandler);
 
                     instantiatedPlayerEntity.transform.SetParent(_playersList, false);
                     Debug.Log("Player added. Name: " + _playerName.text + " key: " + vKey);
@@ -64,5 +64,12 @@ public class RegisterPlayersScreen : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    private void OnPlayerDeletedHandler(GamePlayer gamePlayer)
+    {
+        _activePlayers.Remove(gamePlayer.Player);
+
+        Destroy(gamePlayer.gameObject);
     }
 }

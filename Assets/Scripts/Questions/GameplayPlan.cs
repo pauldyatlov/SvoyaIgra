@@ -27,5 +27,6 @@ public class QuestionsGameplayPlan
     public string Question;
     public string Answer;
     public Sprite Picture;
+    public AudioClip Audio;
     public QuestionsGameplayPlan CatInPoke;
 }
