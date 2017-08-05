@@ -23,6 +23,6 @@ public class GamePlayer : MonoBehaviour
         Player = player;
         _onPlayerDeletedAction = onPlayerDeletedAction;
 
-        _playerLabel.text = "NAME: " + player.Name + " CODE: " + player.Code;
+        _playerLabel.text = "NAME: " + player.Name;
     }
 }

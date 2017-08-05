@@ -28,5 +28,15 @@ public class QuestionsGameplayPlan
     public string Answer;
     public Sprite Picture;
     public AudioClip Audio;
-    public QuestionsGameplayPlan CatInPoke;
+
+    public CatInPokeQuestion CatInPoke;
+
+    public bool IsCatInPoke => !string.IsNullOrEmpty(CatInPoke.Theme) && CatInPoke.Price > 0;
+}
+
+[Serializable]
+public class CatInPokeQuestion
+{
+    public string Theme;
+    public int Price;
 }

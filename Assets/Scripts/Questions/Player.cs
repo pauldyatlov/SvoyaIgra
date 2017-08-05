@@ -1,27 +1,27 @@
 ﻿using System;
-using UnityEngine;
+using System.Net.Sockets;
 
 public class Player
 {
-    public int Points;
     public string Name;
-    public KeyCode Code;
+    public int Points;
+
+    public TcpClient TcpClient;
 
     public Action<Player> OnPointsUpdateAction;
 
-    public Player(string name, KeyCode code)
+    public Player(string name, TcpClient client)
     {
         Name = name;
-        Code = code;
+        Points = 0;
+
+        TcpClient = client;
     }
 
     public void UpdatePoints(int arg)
     {
         Points += arg;
 
-        if (OnPointsUpdateAction != null)
-        {
-            OnPointsUpdateAction(this);
-        }
+        OnPointsUpdateAction?.Invoke(this);
     }
 }

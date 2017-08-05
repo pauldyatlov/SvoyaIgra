@@ -1,18 +1,19 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
+using System.Net.Sockets;
+using UnityEngine.UI;
 
 public class Engine : MonoBehaviour
 {
-    [SerializeField] private RegisterPlayersScreen _registerPlayersScreen;
-
     [SerializeField] private GameTheme _themeTemplate;
     [SerializeField] private RectTransform _placeholder;
 
     [SerializeField] private GameplayPlan _gameplayPlan;
+
+    [SerializeField] private Button _addPlayerButton;
+   // [SerializeField] private AddPlayerScreen _addPlayerScreen;
 
     [SerializeField] private GamePlayerStats _playerStatsTemplate;
     [SerializeField] private RectTransform _playerStatsPlaceholder;
@@ -21,44 +22,41 @@ public class Engine : MonoBehaviour
 
     private readonly Dictionary<GameTheme, int> _themesGameplayPlans = new Dictionary<GameTheme, int>();
 
-    public static Action<Player> OnPlayerKeycodePressed;
+    public static Dictionary<Player, GamePlayerStats> RegisteredPlayersWithViews = new Dictionary<Player, GamePlayerStats>(); 
+    public static List<Player> RegisteredPlayers = new List<Player>(); 
+
+    public static Action<Player> OnPlayerAnswering;
 
     private void Awake()
     {
-        _registerPlayersScreen.Init(arg =>
+        SocketServer.Init();
+
+        SocketServer.OnPlayerConnected += NewPlayerConnectedHandler;
+        SocketServer.OnPlayerDisconnected += PlayerDisconnectedHandler;
+
+        for (var i = 0; i < _gameplayPlan.RoundsList.Count; i++)
         {
-            foreach (var player in arg)
+            var plan = _gameplayPlan.RoundsList[i];
+
+            foreach (var theme in plan.ThemesList)
             {
-                var stat = Instantiate(_playerStatsTemplate);
-
-                stat.transform.SetParent(_playerStatsPlaceholder, false);
-                stat.Init(player);
-
-                player.OnPointsUpdateAction(player);
-            }
-
-            for (var i = 0; i < _gameplayPlan.RoundsList.Count; i++)
-            {
-                var plan = _gameplayPlan.RoundsList[i];
-
-                foreach (var theme in plan.ThemesList)
-                {
-                    var createdTheme = Instantiate(_themeTemplate);
+                var createdTheme = Instantiate(_themeTemplate);
                     
-                    _themesGameplayPlans.Add(createdTheme, i);
+                _themesGameplayPlans.Add(createdTheme, i);
 
-                    createdTheme.Init(_placeholder, theme.QuestionsList, theme.ThemeName, arg, i);
-                    createdTheme._onAvailableQuestionsEnd += OnAvailableQuestionsEndHandler;
+                createdTheme.Init(_placeholder, theme.QuestionsList, theme.ThemeName, i);
+                createdTheme._onAvailableQuestionsEnd += OnAvailableQuestionsEndHandler;
 
-                    if (i != 0)
-                    {
-                        createdTheme.gameObject.SetActive(false);
-                    }
-
-                    StartCoroutine(Co_WaitForInput(arg));
+                if (i != 0)
+                {
+                    createdTheme.gameObject.SetActive(false);
                 }
             }
-        });
+        }
+
+        SocketServer.OnPlayerAnswered += OnPlayerAnsweredHandler;
+
+        //_addPlayerScreen.Show(NewPlayerConnectedHandler);
     }
 
     private void OnAvailableQuestionsEndHandler(GameTheme entity, int round)
@@ -83,16 +81,45 @@ public class Engine : MonoBehaviour
         }
     }
 
-    private static IEnumerator Co_WaitForInput(List<Player> players)
+    private void NewPlayerConnectedHandler(Player player)
     {
-        while (true)
+        var firstOrDefault = RegisteredPlayers.FirstOrDefault(x => x.Name == player.Name);
+        if (firstOrDefault != null)
         {
-            foreach (var player in players.Where(player => Input.GetKeyDown(player.Code)).Where(player => OnPlayerKeycodePressed != null))
-            {
-                OnPlayerKeycodePressed(player);
-            }
+            player.Points = firstOrDefault.Points;
+            player.OnPointsUpdateAction = firstOrDefault.OnPointsUpdateAction;
 
-            yield return null;
+            RegisteredPlayers.Remove(firstOrDefault);
         }
+        else
+        {
+            var stat = Instantiate(_playerStatsTemplate);
+
+            stat.transform.SetParent(_playerStatsPlaceholder, false);
+            stat.Init(player);
+
+            RegisteredPlayersWithViews.Add(player, stat);
+        }
+
+        RegisteredPlayers.Add(player);
+
+        player.OnPointsUpdateAction?.Invoke(player);
+    }
+
+    private void PlayerDisconnectedHandler(TcpClient tcpClient)
+    {
+        //var firstOrDefault = RegisteredPlayers.FirstOrDefault(x => x.Key.TcpClient == tcpClient);
+
+        //if (RegisteredPlayers[firstOrDefault.Key] != null)
+        //    Destroy(RegisteredPlayers[firstOrDefault.Key].gameObject);
+
+        //RegisteredPlayers.Remove(firstOrDefault.Key);
+    }
+
+    private static void OnPlayerAnsweredHandler(string nickname)
+    {
+        var player = RegisteredPlayers.FirstOrDefault(x => x.Name == nickname);
+
+        OnPlayerAnswering?.Invoke(player);
     }
 }

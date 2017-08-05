@@ -7,14 +7,15 @@ public class GameTheme : MonoBehaviour
 {
     [SerializeField] private GameQuestion _gameQuestionTemplate;
     [SerializeField] private Text _themeNameLabel;
-    [SerializeField] private List<RectTransform> _questionsPlaceholders;
+    [SerializeField] private RectTransform _questionsContainer;
+
     [SerializeField] private TaskScreen _taskScreen;
 
     private readonly List<GameQuestion> _availableQuestions = new List<GameQuestion>();
 
     public Action<GameTheme, int> _onAvailableQuestionsEnd;
 
-    public void Init(RectTransform placeholder, List<QuestionsGameplayPlan> questions, string themeName, List<Player> playersList, int round)
+    public void Init(RectTransform placeholder, List<QuestionsGameplayPlan> questions, string themeName, int round)
     {
         gameObject.SetActive(true);
 
@@ -28,19 +29,21 @@ public class GameTheme : MonoBehaviour
             var instantiatedQuestion = Instantiate(_gameQuestionTemplate);
 
             _availableQuestions.Add(instantiatedQuestion);
-            instantiatedQuestion.Init(questions[index].Price.ToString(), _questionsPlaceholders[index], () =>
+            instantiatedQuestion.Init(questions[index].Price.ToString(), () =>
             {
                 _availableQuestions.Remove(instantiatedQuestion);
 
-                if (_availableQuestions.Count <= 0 && _onAvailableQuestionsEnd != null)
+                if (_availableQuestions.Count <= 0)
                 {
-                    _onAvailableQuestionsEnd(this, round);
+                    _onAvailableQuestionsEnd?.Invoke(this, round);
                 }
 
-                instantiatedQuestion.gameObject.SetActive(false);
+                instantiatedQuestion.Close();
 
                 _taskScreen.Show(questions[index]);
             });
+
+            instantiatedQuestion.transform.SetParent(_questionsContainer, false);
         }
     }
 }
