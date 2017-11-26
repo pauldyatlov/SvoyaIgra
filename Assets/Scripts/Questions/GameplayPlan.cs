@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Video;
 
 public class GameplayPlan : ScriptableObject
 {
@@ -28,6 +29,7 @@ public class QuestionsGameplayPlan
     public string Answer;
     public Sprite Picture;
     public AudioClip Audio;
+    public VideoClip Video;
 
     public CatInPokeQuestion CatInPoke;
 

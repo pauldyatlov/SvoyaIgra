@@ -10,6 +10,7 @@ public class TaskScreen : MonoBehaviour
     [SerializeField] private GameObject _themesGameObject;
     [SerializeField] private CatInPokeScreen _catInPokeScreen;
     [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private StreamVideo _videoPlayer;
 
     [SerializeField] private Text _answeringPlayerLabel;
     [SerializeField] private Text _timerLabel;
@@ -85,12 +86,15 @@ public class TaskScreen : MonoBehaviour
 
         _label.text = _gameplayPlan.Question;
 
-        if (plan.Picture != null)
-        {
+        _image.gameObject.SetActive(plan.Picture != null);
+        if (plan.Picture != null) {
             _image.sprite = plan.Picture;
         }
 
-        _image.gameObject.SetActive(plan.Picture != null);
+        _videoPlayer.gameObject.SetActive(_gameplayPlan.Video != null);
+        if (_gameplayPlan.Video != null) {
+            _videoPlayer.Show(_gameplayPlan.Video);
+        }
 
         _answeringPlayerLabel.text = "";
         _answeringPlayer = null;
