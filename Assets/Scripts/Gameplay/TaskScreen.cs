@@ -22,7 +22,7 @@ public class TaskScreen : MonoBehaviour
 
     [SerializeField] private Button _canAnswerButton;
 
-    private readonly List<Player> _failedPlayers = new List<Player>(); 
+    private readonly List<Player> _failedPlayers = new List<Player>();
     private bool _paused;
 
     private QuestionsGameplayPlan _gameplayPlan;
@@ -206,7 +206,10 @@ public class TaskScreen : MonoBehaviour
             }
         //}
 
-        Engine.RegisteredPlayersWithViews.FirstOrDefault(x => x.Key == player).Value.SetCanvasGroup(value);
+        var sobaka = Engine.RegisteredPlayersWithViews.FirstOrDefault(x => x.Key == player);
+
+        if (sobaka.Value != null)
+            sobaka.Value.SetCanvasGroup(value);
     }
 
     private IEnumerator Co_GameplayRoundTimer(float time)

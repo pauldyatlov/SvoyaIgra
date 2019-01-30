@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\Darky\.Rider2018.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Darky\.Rider2018.3\system\resharper-host\local\Transient\ReSharperHost\v183\SolutionCaches\_SvoyaIgra.1147969823.00" t="ExcludeRecursive" />
+    <e p="D:\REPOS\SvoyaIgra" t="IncludeRecursive">
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Question" t="Include">
+          <e p="05.08" t="Include">
+            <e p="3" t="Include">
+              <e p="хороший перевод песен" t="Include">
+                <e p="100.txt" t="Include" />
+              </e>
+            </e>
+          </e>
+          <e p="05.11" t="Include">
+            <e p="1" t="Include">
+              <e p="история" t="Include">
+                <e p="Новый текстовый документ.txt" t="Include" />
+              </e>
+              <e p="подвошные загадки" t="Include">
+                <e p="Новый текстовый документ.txt" t="Include" />
+              </e>
+            </e>
+            <e p="3" t="Include">
+              <e p="сложна" t="Include">
+                <e p="Новый текстовый документ.txt" t="Include" />
+              </e>
+            </e>
+            <e p="5" t="Include">
+              <e p="антонимы фильмы" t="Include">
+                <e p="Новый текстовый документ.txt" t="Include" />
+              </e>
+              <e p="игра престолов" t="Include">
+                <e p="Новый текстовый документ.txt" t="Include" />
+              </e>
+              <e p="репер или поэт" t="Include">
+                <e p="Новый текстовый документ.txt" t="Include" />
+              </e>
+            </e>
+          </e>
+          <e p="15.10" t="Include">
+            <e p="1" t="Include">
+              <e p="разомни мозги(нет)" t="Include">
+                <e p="вопросы.txt" t="Include" />
+              </e>
+            </e>
+            <e p="2" t="Include">
+              <e p="рус фильм по цитате" t="Include">
+                <e p="вопрос.txt" t="Include" />
+              </e>
+            </e>
+            <e p="3" t="Include">
+              <e p="пересказы" t="Include">
+                <e p="воп.txt" t="Include" />
+              </e>
+            </e>
+          </e>
+          <e p="2019-19-01" t="Include">
+            <e p="4" t="Include">
+              <e p="Текстовые по сериалам" t="Include">
+                <e p="what.txt" t="Include" />
+              </e>
+            </e>
+            <e p="5" t="Include">
+              <e p="Молодежный сленг" t="Include">
+                <e p="what.txt" t="Include" />
+              </e>
+              <e p="Неприятные загадки" t="Include">
+                <e p="what.txt" t="Include" />
+              </e>
+            </e>
+          </e>
+          <e p="2019-26-01" t="Include">
+            <e p="1" t="Include">
+              <e p="арифметика" t="Include">
+                <e p="what.txt" t="Include" />
+              </e>
+              <e p="заблуждения" t="Include">
+                <e p="what.txt" t="Include" />
+              </e>
+            </e>
+            <e p="2" t="Include">
+              <e p="Симпсоны" t="Include">
+                <e p="Новый текстовый документ.txt" t="Include" />
+              </e>
+            </e>
+            <e p="3" t="Include">
+              <e p="Изобретатели" t="Include">
+                <e p="Новый текстовый документ.txt" t="Include" />
+              </e>
+              <e p="столицы" t="Include">
+                <e p="Новый текстовый документ.txt" t="Include" />
+              </e>
+              <e p="цитатник" t="Include">
+                <e p="Новый текстовый документ.txt" t="Include" />
+              </e>
+            </e>
+            <e p="4" t="Include">
+              <e p="мифы и легенды" t="Include">
+                <e p="Новый текстовый документ.txt" t="Include" />
+              </e>
+            </e>
+          </e>
+        </e>
+        <e p="Scripts" t="Include">
+          <e p="Gameplay" t="Include">
+            <e p="AddPlayerScreen.cs" t="Include" />
+            <e p="CatInPokeScreen.cs" t="Include" />
+            <e p="Engine.cs" t="Include" />
+            <e p="GamePlayer.cs" t="Include" />
+            <e p="GamePlayerStats.cs" t="Include" />
+            <e p="GameQuestion.cs" t="Include" />
+            <e p="GameTheme.cs" t="Include" />
+            <e p="RegisterPlayersScreen.cs" t="Include" />
+            <e p="StreamVideo.cs" t="Include" />
+            <e p="TaskScreen.cs" t="Include" />
+          </e>
+          <e p="Network" t="Include">
+            <e p="SocketServer.cs" t="Include" />
+          </e>
+          <e p="Questions" t="Include">
+            <e p="GameplayPlan.cs" t="Include" />
+            <e p="Player.cs" t="Include" />
+          </e>
+          <e p="Utils" t="Include">
+            <e p="Extensions.cs" t="Include" />
+            <e p="GameplayPlanAsset.cs" t="Include" />
+            <e p="ScriptableObjectUtility.cs" t="Include" />
+          </e>
+        </e>
+        <e p="TextMesh Pro" t="Include">
+          <e p="Resources" t="Include">
+            <e p="LineBreaking Following Characters.txt" t="Include" />
+            <e p="LineBreaking Leading Characters.txt" t="Include" />
+            <e p="Shaders" t="Include">
+              <e p="TMP_Bitmap-Custom-Atlas.shader" t="Include" />
+              <e p="TMP_Bitmap-Mobile.shader" t="Include" />
+              <e p="TMP_Bitmap.shader" t="Include" />
+              <e p="TMP_SDF Overlay.shader" t="Include" />
+              <e p="TMP_SDF-Mobile Masking.shader" t="Include" />
+              <e p="TMP_SDF-Mobile Overlay.shader" t="Include" />
+              <e p="TMP_SDF-Mobile.shader" t="Include" />
+              <e p="TMP_SDF-Surface-Mobile.shader" t="Include" />
+              <e p="TMP_SDF-Surface.shader" t="Include" />
+              <e p="TMP_SDF.shader" t="Include" />
+              <e p="TMP_Sprite.shader" t="Include" />
+              <e p="TMPro.cginc" t="Include" />
+              <e p="TMPro_Properties.cginc" t="Include" />
+              <e p="TMPro_Surface.cginc" t="Include" />
+            </e>
+          </e>
+          <e p="Sprites" t="Include">
+            <e p="EmojiOne Attribution.txt" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="Library" t="ExcludeRecursive" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="SvoyaIgra.sln" t="IncludeFlat" />
+      <e p="Temp" t="ExcludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+      </e>
+    </e>
+  </component>
+</project>
