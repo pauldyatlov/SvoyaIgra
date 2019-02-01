@@ -2,26 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="036e971c-870d-4cbb-b831-d040dddbdd7b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Plans/17.09.2017/Plan.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plans/17.09.2017/Plan.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Question/05.11/4/дичь ютуба/100-Тупое говно тупого говна, говно - Гоблин.mp4.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Question/05.11/4/дичь ютуба/100-Тупое говно тупого говна, говно - Гоблин.mp4.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Question/09.09/1/videos/100-USSR.mp4.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Question/09.09/1/videos/100-USSR.mp4.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Question/09.09/1/videos/200-inside out.mp4.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Question/09.09/1/videos/200-inside out.mp4.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Question/09.09/1/videos/300-star wars 7.mp4.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Question/09.09/1/videos/300-star wars 7.mp4.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Question/09.09/1/videos/400-мадагаскар.mp4.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Question/09.09/1/videos/400-мадагаскар.mp4.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Question/09.09/1/videos/500-битмейкер-патимейкер.mp4.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Question/09.09/1/videos/500-битмейкер-патимейкер.mp4.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Question/UNUSED.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/CatInPokeScreen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/CatInPokeScreen.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gameplay/TaskScreen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gameplay/TaskScreen.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utils/GameplayPlanAsset.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utils/GameplayPlanAsset.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utils/ScriptableObjectUtility.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utils/ScriptableObjectUtility.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/AudioManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/AudioManager.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/GraphicsSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/GraphicsSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/UnityAdsSettings.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/UnityConnectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/UnityConnectSettings.asset" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -62,7 +44,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Assets/Scripts/Utils/ScriptableObjectUtility.cs">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="666">
@@ -76,6 +58,24 @@
                 <marker date="1548882852948" expanded="true" signature="549:610" ph="{...}" />
                 <marker date="1548882852948" expanded="true" signature="662:801" ph="{...}" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/Question/2018-01-02 (office)/1/аббревиатуры/Новый текстовый документ.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="72">
+              <caret line="4" column="150" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="150" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Assets/Question/2018-01-02 (office)/1/загадки/Новый текстовый документ.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="54">
+              <caret line="3" column="95" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="95" />
             </state>
           </provider>
         </entry>
@@ -171,12 +171,12 @@
       <updated>1547999431989</updated>
       <workItem from="1547999433184" duration="599000" />
       <workItem from="1548491684017" duration="66000" />
-      <workItem from="1548882787858" duration="61000" />
+      <workItem from="1548882787858" duration="1348000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="726000" />
+    <option name="totallyTimeSpent" value="2013000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -281,6 +281,20 @@
             <marker date="1548882852948" expanded="true" signature="549:610" ph="{...}" />
             <marker date="1548882852948" expanded="true" signature="662:801" ph="{...}" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Question/2018-01-02 (office)/1/аббревиатуры/Новый текстовый документ.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="4" column="150" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="150" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Question/2018-01-02 (office)/1/загадки/Новый текстовый документ.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="3" column="95" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="95" />
         </state>
       </provider>
     </entry>
