@@ -33,7 +33,8 @@ public class TaskScreen : MonoBehaviour
     private Coroutine _timeCoroutine;
     private Player _catInPokePlayer;
 
-    private int QuestionPrice => _gameplayPlan.CatInPoke.Price > 0 ? _gameplayPlan.CatInPoke.Price : _gameplayPlan.Price;
+    private int QuestionPrice =>
+        _gameplayPlan.CatInPoke.Price > 0 ? _gameplayPlan.CatInPoke.Price : _gameplayPlan.Price;
 
     private void Awake()
     {
@@ -87,12 +88,14 @@ public class TaskScreen : MonoBehaviour
         _label.text = _gameplayPlan.Question;
 
         _image.gameObject.SetActive(plan.Picture != null);
-        if (plan.Picture != null) {
+        if (plan.Picture != null)
+        {
             _image.sprite = plan.Picture;
         }
 
         _videoPlayer.gameObject.SetActive(_gameplayPlan.Video != null);
-        if (_gameplayPlan.Video != null) {
+        if (_gameplayPlan.Video != null)
+        {
             _videoPlayer.Show(_gameplayPlan.Video);
         }
 
@@ -106,53 +109,41 @@ public class TaskScreen : MonoBehaviour
 
     private void HandlePlayerAnswering(Player arg)
     {
-        if (_canAcceptAnswers)
-        {
-            if (_answeringPlayer == null)
-            {
-                if (!_failedPlayers.Contains(arg))
-                {
-                    _answeringPlayer = arg;
+        if (!_canAcceptAnswers || _answeringPlayer != null || _failedPlayers.Contains(arg))
+            return;
 
-                    _acceptButton.gameObject.SetActive(true);
-                    _declineButton.gameObject.SetActive(true);
+        _answeringPlayer = arg;
 
-                    Time.timeScale = 0.0f;
+        _acceptButton.gameObject.SetActive(true);
+        _declineButton.gameObject.SetActive(true);
 
-                    SetAsAnswering(arg, true);
-                }
-            }
-        }
+        Time.timeScale = 0.0f;
+
+        SetAsAnswering(arg, true);
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F5) && Input.GetKey(KeyCode.LeftControl))
-        {
             CanAnswerHandler();
-        }
     }
 
     private void CanAnswerHandler()
     {
-        if (_timeCoroutine != null) {
+        if (_timeCoroutine != null)
             StopCoroutine(_timeCoroutine);
-        }
 
         _timeCoroutine = StartCoroutine(Co_GameplayRoundTimer(_gameplayPlan.IsCatInPoke ? 1 : MinTimer));
 
         _canAnswerButton.gameObject.SetActive(false);
 
-        if (_gameplayPlan.Audio != null) {
+        if (_gameplayPlan.Audio != null)
             _audioSource.PlayOneShot(_gameplayPlan.Audio);
-        }
 
         _canAcceptAnswers = true;
 
         if (_gameplayPlan.IsCatInPoke && _catInPokePlayer != null)
-        {
             HandlePlayerAnswering(_catInPokePlayer);
-        }
     }
 
     private void CorrectAnswer()
@@ -162,7 +153,7 @@ public class TaskScreen : MonoBehaviour
 
         Time.timeScale = 1.0f;
 
-        SocketServer.SendMessage(_answeringPlayer.TcpClient, new QuizCommand
+        SocketServer.SendMessage(_answeringPlayer.Client, new QuizCommand
         {
             Command = SocketServer.CorrectAnswer,
             Parameter = QuestionPrice.ToString()
@@ -185,7 +176,7 @@ public class TaskScreen : MonoBehaviour
         _acceptButton.gameObject.SetActive(false);
         _declineButton.gameObject.SetActive(false);
 
-        SocketServer.SendMessage(_answeringPlayer.TcpClient, new QuizCommand
+        SocketServer.SendMessage(_answeringPlayer.Client, new QuizCommand
         {
             Command = SocketServer.WrongAnswer,
             Parameter = (-QuestionPrice).ToString()
@@ -198,18 +189,13 @@ public class TaskScreen : MonoBehaviour
     {
         _answeringPlayerLabel.text = value ? "ОТВЕЧАЕТ " + player.Name : "";
 
-        //if (value)
-        //{
-            foreach (var view in Engine.RegisteredPlayersWithViews.Where(x => !_failedPlayers.Contains(x.Key)))
-            {
-                view.Value.SetCanvasGroup(!value);
-            }
-        //}
+        foreach (var view in Engine.RegisteredPlayersWithViews.Where(x => !_failedPlayers.Contains(x.Key)))
+            view.Value.SetCanvasGroup(!value);
 
-        var sobaka = Engine.RegisteredPlayersWithViews.FirstOrDefault(x => x.Key == player);
+        var registeredPlayer = Engine.RegisteredPlayersWithViews.FirstOrDefault(x => x.Key == player);
 
-        if (sobaka.Value != null)
-            sobaka.Value.SetCanvasGroup(value);
+        if (registeredPlayer.Value != null)
+            registeredPlayer.Value.SetCanvasGroup(value);
     }
 
     private IEnumerator Co_GameplayRoundTimer(float time)
@@ -230,14 +216,10 @@ public class TaskScreen : MonoBehaviour
     public void Close()
     {
         if (_answeringPlayer != null)
-        {
             IncorrectAnswer();
-        }
 
         foreach (var view in Engine.RegisteredPlayersWithViews)
-        {
             view.Value.SetCanvasGroup(true);
-        }
 
         Engine.OnPlayerAnswering -= HandlePlayerAnswering;
 

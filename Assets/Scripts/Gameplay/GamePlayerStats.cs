@@ -10,7 +10,7 @@ public class GamePlayerStats : MonoBehaviour, IPointerClickHandler
 
     [SerializeField] private CanvasGroup _canvasGroup;
 
-    public Action<Player> OnPlayerSelectedAction;
+    public event Action<Player> OnPlayerSelectedAction;
     private Player _player;
 
     public void Init(Player player)

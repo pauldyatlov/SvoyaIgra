@@ -7,8 +7,8 @@ public class GamePlayer : MonoBehaviour
     [SerializeField] private Text _playerLabel;
     [SerializeField] private Button _deletePlayerButton;
 
-    private Action<GamePlayer> _onPlayerDeletedAction;
     public Player Player;
+    private Action<GamePlayer> _onPlayerDeletedAction;
 
     private void Awake()
     {

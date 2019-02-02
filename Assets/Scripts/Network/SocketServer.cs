@@ -8,7 +8,6 @@ public class QuizCommand
 {
     public string Command;
     public string Parameter;
-    public string SecondParameter;
 }
 
 public static class SocketServer
@@ -22,20 +21,17 @@ public static class SocketServer
     public const string WrongAnswer = "WrongAnswer";
 
     public static Action<Player> OnPlayerConnected;
-    public static Action<TcpClient> OnPlayerDisconnected;
 
     public static Action<string> OnPlayerAnswered;
+    private static TcpListener _listener;
 
     public static async void Init()
     {
-        var listener = new TcpListener(IPAddress.Any, 8888);
-
-        listener.Start();
+        _listener = new TcpListener(IPAddress.Any, 8888);
+        _listener.Start();
 
         while (true)
-        {
-            HandleClient(await listener.AcceptTcpClientAsync());
-        }
+            HandleClient(await _listener.AcceptTcpClientAsync());
     }
 
     private static async void HandleClient(TcpClient client)
@@ -47,59 +43,56 @@ public static class SocketServer
             var stream = client.GetStream();
 
             while (true)
-            {
                 HandleAnswer(await stream.ReadString(), client);
-            }
         }
     }
 
     private static void HandleAnswer(string json, TcpClient client)
     {
-        try
+        if (string.IsNullOrEmpty(json))
         {
-            var action = JsonUtility.FromJson<QuizCommand>(json);
+            Debug.LogError("Its null");
 
-            if (action == null)
-            {
-                Debug.LogError("Something went wrong");
+            return;
+        }
 
-                OnPlayerDisconnected(client);
+        var action = JsonUtility.FromJson<QuizCommand>(json);
 
-                SendMessage(client, new QuizCommand
+        if (action == null)
+        {
+            Debug.LogError("Something went wrong");
+
+            return;
+
+            SendMessage(client, new QuizCommand
                 {
                     Command = "Disconnect",
                     Parameter = ":("
                 },
-                    client.Dispose);
+                () => { });
 
-                return;
-            }
-
-            Debug.Log("Command received: " + action.Command);
-
-            if (action.Command == PerformConnect)
-            {
-                Debug.Log("New player connected: " + action.Parameter);
-
-                OnPlayerConnected?.Invoke(new Player(action.Parameter, client));
-
-                var firstOrDefault = Engine.RegisteredPlayers.FirstOrDefault(x => x.Name == action.Parameter);
-
-                SendMessage(client, new QuizCommand
-                {
-                    Command = ConnectApproved,
-                    Parameter = action.Parameter,
-                    SecondParameter = firstOrDefault?.Points.ToString() ?? "0"
-                });
-            }
-            else if (action.Command == MakeAnswer)
-            {
-                OnPlayerAnswered?.Invoke(action.Parameter);
-            }
+            return;
         }
-        catch (Exception e)
+
+        Debug.Log("Command received: " + action.Command);
+
+        if (action.Command == PerformConnect)
         {
-            Debug.LogError("Error happened, but it's okay: " + e);
+            Debug.Log("New player connected: " + action.Parameter);
+
+            OnPlayerConnected?.Invoke(new Player(action.Parameter, client));
+
+//            var firstOrDefault = Engine.RegisteredPlayers.FirstOrDefault(x => x.Name == action.Parameter);
+
+            SendMessage(client, new QuizCommand
+            {
+                Command = ConnectApproved,
+                Parameter = action.Parameter,
+            });
+        }
+        else if (action.Command == MakeAnswer)
+        {
+            OnPlayerAnswered?.Invoke(action.Parameter);
         }
     }
 

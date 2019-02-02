@@ -6,7 +6,7 @@ public class Player
     public string Name;
     public int Points;
 
-    public TcpClient TcpClient;
+    public TcpClient Client;
 
     public Action<Player> OnPointsUpdateAction;
 
@@ -15,7 +15,7 @@ public class Player
         Name = name;
         Points = 0;
 
-        TcpClient = client;
+        Client = client;
     }
 
     public void UpdatePoints(int arg)

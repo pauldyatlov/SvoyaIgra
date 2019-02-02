@@ -66,6 +66,21 @@
                 <e p="Новый текстовый документ.txt" t="Include" />
               </e>
             </e>
+            <e p="2" t="Include">
+              <e p="Школные вопросы" t="Include">
+                <e p="Новый текстовый документ.txt" t="Include" />
+              </e>
+            </e>
+            <e p="4" t="Include">
+              <e p="зоновские загадки" t="Include">
+                <e p="Новый текстовый документ.txt" t="Include" />
+              </e>
+            </e>
+            <e p="5" t="Include">
+              <e p="научные достижения" t="Include">
+                <e p="Новый текстовый документ.txt" t="Include" />
+              </e>
+            </e>
           </e>
           <e p="2019-19-01" t="Include">
             <e p="4" t="Include">
@@ -116,14 +131,12 @@
         </e>
         <e p="Scripts" t="Include">
           <e p="Gameplay" t="Include">
-            <e p="AddPlayerScreen.cs" t="Include" />
             <e p="CatInPokeScreen.cs" t="Include" />
             <e p="Engine.cs" t="Include" />
             <e p="GamePlayer.cs" t="Include" />
             <e p="GamePlayerStats.cs" t="Include" />
             <e p="GameQuestion.cs" t="Include" />
             <e p="GameTheme.cs" t="Include" />
-            <e p="RegisterPlayersScreen.cs" t="Include" />
             <e p="StreamVideo.cs" t="Include" />
             <e p="TaskScreen.cs" t="Include" />
           </e>

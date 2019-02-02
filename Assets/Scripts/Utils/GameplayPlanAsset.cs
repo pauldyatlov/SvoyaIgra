@@ -1,4 +1,5 @@
 ﻿#if UNITY_EDITOR
+
 using Assets.Scripts.Utils;
 using UnityEditor;
 
@@ -10,4 +11,5 @@ public class GameplayPlanAsset
         ScriptableObjectUtility.CreateAsset<GameplayPlan>();
     }
 }
+
 #endif
