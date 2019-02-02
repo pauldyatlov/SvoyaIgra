@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class QuizCommand
@@ -12,17 +13,16 @@ public class QuizCommand
 
 public static class SocketServer
 {
-    private const string PerformConnect = "PerformConnect";
-    private const string ConnectApproved = "ConnectApproved";
-
-    private const string MakeAnswer = "MakeAnswer";
-
+    public const string PerformConnect = "PerformConnect";
+    public const string ConnectApproved = "ConnectApproved";
+    public const string MakeAnswer = "MakeAnswer";
     public const string CorrectAnswer = "CorrectAnswer";
     public const string WrongAnswer = "WrongAnswer";
 
     public static Action<Player> OnPlayerConnected;
-
+    public static Action<Player> OnPlayerDisconnected;
     public static Action<string> OnPlayerAnswered;
+
     private static TcpListener _listener;
 
     public static async void Init()
@@ -31,75 +31,71 @@ public static class SocketServer
         _listener.Start();
 
         while (true)
-            HandleClient(await _listener.AcceptTcpClientAsync());
+            _ = HandleClient(await _listener.AcceptTcpClientAsync());
     }
 
-    private static async void HandleClient(TcpClient client)
+    private static async Task HandleClient(TcpClient client)
     {
-        Debug.Log("Client connected");
-
-        using (client)
+        try
         {
-            var stream = client.GetStream();
+            Debug.Log("Client connected");
 
-            while (true)
-                HandleAnswer(await stream.ReadString(), client);
+            using (client)
+            {
+                var stream = client.GetStream();
+
+                while (true)
+                    HandleAnswer(await stream.ReadString(), stream);
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
         }
     }
 
-    private static void HandleAnswer(string json, TcpClient client)
+    private static void HandleAnswer(string json, NetworkStream stream)
     {
         if (string.IsNullOrEmpty(json))
         {
-            Debug.LogError("Its null");
+//            OnPlayerDisonnected?.Invoke();
 
-            return;
+            throw new Exception("Player disconnected");
         }
 
         var action = JsonUtility.FromJson<QuizCommand>(json);
-
         if (action == null)
-        {
-            Debug.LogError("Something went wrong");
-
-            return;
-
-            SendMessage(client, new QuizCommand
-                {
-                    Command = "Disconnect",
-                    Parameter = ":("
-                },
-                () => { });
-
-            return;
-        }
+            throw new Exception("Action was not handled: " + action);
 
         Debug.Log("Command received: " + action.Command);
 
-        if (action.Command == PerformConnect)
+        switch (action.Command)
         {
-            Debug.Log("New player connected: " + action.Parameter);
+            case PerformConnect:
+            {
+                Debug.Log("New player connected: " + action.Parameter);
 
-            OnPlayerConnected?.Invoke(new Player(action.Parameter, client));
+                OnPlayerConnected?.Invoke(new Player(action.Parameter, stream));
 
 //            var firstOrDefault = Engine.RegisteredPlayers.FirstOrDefault(x => x.Name == action.Parameter);
 
-            SendMessage(client, new QuizCommand
+                SendMessage(stream, new QuizCommand
+                {
+                    Command = ConnectApproved,
+                    Parameter = action.Parameter,
+                });
+                break;
+            }
+            case MakeAnswer:
             {
-                Command = ConnectApproved,
-                Parameter = action.Parameter,
-            });
-        }
-        else if (action.Command == MakeAnswer)
-        {
-            OnPlayerAnswered?.Invoke(action.Parameter);
+                OnPlayerAnswered?.Invoke(action.Parameter);
+                break;
+            }
         }
     }
 
-    public static async void SendMessage(TcpClient client, QuizCommand message, Action callback = null)
+    public static async void SendMessage(NetworkStream stream, QuizCommand message, Action callback = null)
     {
-        var stream = client.GetStream();
-
         await stream.WriteString(JsonUtility.ToJson(message));
 
         callback?.Invoke();

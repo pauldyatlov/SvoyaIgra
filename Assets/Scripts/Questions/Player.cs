@@ -6,16 +6,16 @@ public class Player
     public string Name;
     public int Points;
 
-    public TcpClient Client;
+    public NetworkStream Stream;
 
     public Action<Player> OnPointsUpdateAction;
 
-    public Player(string name, TcpClient client)
+    public Player(string name, NetworkStream stream)
     {
         Name = name;
         Points = 0;
 
-        Client = client;
+        Stream = stream;
     }
 
     public void UpdatePoints(int arg)

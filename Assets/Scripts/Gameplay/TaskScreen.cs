@@ -153,7 +153,7 @@ public class TaskScreen : MonoBehaviour
 
         Time.timeScale = 1.0f;
 
-        SocketServer.SendMessage(_answeringPlayer.Client, new QuizCommand
+        SocketServer.SendMessage(_answeringPlayer.Stream, new QuizCommand
         {
             Command = SocketServer.CorrectAnswer,
             Parameter = QuestionPrice.ToString()
@@ -176,7 +176,7 @@ public class TaskScreen : MonoBehaviour
         _acceptButton.gameObject.SetActive(false);
         _declineButton.gameObject.SetActive(false);
 
-        SocketServer.SendMessage(_answeringPlayer.Client, new QuizCommand
+        SocketServer.SendMessage(_answeringPlayer.Stream, new QuizCommand
         {
             Command = SocketServer.WrongAnswer,
             Parameter = (-QuestionPrice).ToString()
