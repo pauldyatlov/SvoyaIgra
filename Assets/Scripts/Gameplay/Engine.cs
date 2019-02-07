@@ -12,20 +12,24 @@ public class Engine : MonoBehaviour
     [SerializeField] private GamePlayerStats _playerStatsTemplate;
     [SerializeField] private RectTransform _playerStatsPlaceholder;
 
+    [SerializeField] private SetScoreWindow _setScoreWindow;
+
     public static event Action<Player> OnPlayerAnswering;
 
-    public static readonly Dictionary<Player, GamePlayerStats> RegisteredPlayersWithViews = new Dictionary<Player, GamePlayerStats>();
+    public static readonly Dictionary<Player, GamePlayerStats> PlayerViews =
+        new Dictionary<Player, GamePlayerStats>();
+
     public static readonly List<Player> RegisteredPlayers = new List<Player>();
 
     private readonly Dictionary<GameTheme, int> _themesGameplayPlans = new Dictionary<GameTheme, int>();
-
     private int _currentRound;
 
     private void Awake()
     {
         SocketServer.Init();
 
-        SocketServer.OnPlayerConnected += NewPlayerConnectedHandler;
+        SocketServer.OnPlayerConnected += PlayerConnectedHandler;
+        SocketServer.OnPlayerDisconnected += PlayerDisconnectedHandler;
 
         for (var i = 0; i < _gameplayPlan.RoundsList.Count; i++)
         {
@@ -65,7 +69,7 @@ public class Engine : MonoBehaviour
         }
     }
 
-    private void NewPlayerConnectedHandler(Player player)
+    private void PlayerConnectedHandler(Player player)
     {
         var firstOrDefault = RegisteredPlayers.FirstOrDefault(x => x.Name == player.Name);
         if (firstOrDefault != null)
@@ -73,27 +77,52 @@ public class Engine : MonoBehaviour
             player.Points = firstOrDefault.Points;
             player.OnPointsUpdateAction = firstOrDefault.OnPointsUpdateAction;
 
+            RegisteredPlayers.Add(player);
             RegisteredPlayers.Remove(firstOrDefault);
         }
         else
         {
-            var stat = Instantiate(_playerStatsTemplate);
+            var stat = Instantiate(_playerStatsTemplate, _playerStatsPlaceholder, false);
+            stat.Init(player, OnPlayerSelected);
 
-            stat.transform.SetParent(_playerStatsPlaceholder, false);
-            stat.Init(player);
-
-            RegisteredPlayersWithViews.Add(player, stat);
+            RegisteredPlayers.Add(player);
+            PlayerViews.Add(player, stat);
         }
-
-        RegisteredPlayers.Add(player);
 
         player.OnPointsUpdateAction?.Invoke(player);
     }
 
-    private static void OnPlayerAnsweredHandler(string nickname)
+    private void PlayerDisconnectedHandler(Player player)
     {
-        var player = RegisteredPlayers.FirstOrDefault(x => x.Name == nickname);
+        if (!PlayerViews.ContainsKey(player))
+        {
+            Debug.LogError("RegisteredPlayersWithViews does not contain key " + player.Name + "!");
+            return;
+        }
 
-        OnPlayerAnswering?.Invoke(player);
+        PlayerViews[player].SetCanvasGroup(false);
+    }
+
+    private void OnPlayerAnsweredHandler(string nickname)
+    {
+        OnPlayerAnswering?.Invoke(RegisteredPlayers.FirstOrDefault(x => x.Name == nickname));
+    }
+
+    private void OnPlayerSelected(Player player)
+    {
+        _setScoreWindow.Show(player, score =>
+        {
+            int intScore;
+
+            int.TryParse(score, out intScore);
+
+            player.SetPoints(intScore);
+
+            SocketServer.SendMessage(player.Stream, new QuizCommand
+            {
+                Command = SocketServer.SetScore,
+                Parameter = score
+            });
+        });
     }
 }

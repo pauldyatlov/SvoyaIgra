@@ -88,16 +88,14 @@ public class TaskScreen : MonoBehaviour
         _label.text = _gameplayPlan.Question;
 
         _image.gameObject.SetActive(plan.Picture != null);
+
         if (plan.Picture != null)
-        {
             _image.sprite = plan.Picture;
-        }
 
         _videoPlayer.gameObject.SetActive(_gameplayPlan.Video != null);
+
         if (_gameplayPlan.Video != null)
-        {
             _videoPlayer.Show(_gameplayPlan.Video);
-        }
 
         _answeringPlayerLabel.text = "";
         _answeringPlayer = null;
@@ -189,10 +187,10 @@ public class TaskScreen : MonoBehaviour
     {
         _answeringPlayerLabel.text = value ? "ОТВЕЧАЕТ " + player.Name : "";
 
-        foreach (var view in Engine.RegisteredPlayersWithViews.Where(x => !_failedPlayers.Contains(x.Key)))
+        foreach (var view in Engine.PlayerViews.Where(x => !_failedPlayers.Contains(x.Key)))
             view.Value.SetCanvasGroup(!value);
 
-        var registeredPlayer = Engine.RegisteredPlayersWithViews.FirstOrDefault(x => x.Key == player);
+        var registeredPlayer = Engine.PlayerViews.FirstOrDefault(x => x.Key == player);
 
         if (registeredPlayer.Value != null)
             registeredPlayer.Value.SetCanvasGroup(value);
@@ -218,7 +216,7 @@ public class TaskScreen : MonoBehaviour
         if (_answeringPlayer != null)
             IncorrectAnswer();
 
-        foreach (var view in Engine.RegisteredPlayersWithViews)
+        foreach (var view in Engine.PlayerViews)
             view.Value.SetCanvasGroup(true);
 
         Engine.OnPlayerAnswering -= HandlePlayerAnswering;

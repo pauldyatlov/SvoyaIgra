@@ -18,6 +18,7 @@ public static class SocketServer
     public const string MakeAnswer = "MakeAnswer";
     public const string CorrectAnswer = "CorrectAnswer";
     public const string WrongAnswer = "WrongAnswer";
+    public const string SetScore = "SetPoints";
 
     public static Action<Player> OnPlayerConnected;
     public static Action<Player> OnPlayerDisconnected;
@@ -58,9 +59,14 @@ public static class SocketServer
     {
         if (string.IsNullOrEmpty(json))
         {
-//            OnPlayerDisonnected?.Invoke();
+            var player = Engine.RegisteredPlayers.FirstOrDefault(x => x.Stream == stream);
 
-            throw new Exception("Player disconnected");
+            if (player == null)
+                throw new Exception("[!] Unknown player disconnected");
+
+            OnPlayerDisconnected?.Invoke(player);
+
+            throw new Exception($"[!] {player.Name} disconnected");
         }
 
         var action = JsonUtility.FromJson<QuizCommand>(json);

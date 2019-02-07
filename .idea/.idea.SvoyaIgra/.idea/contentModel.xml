@@ -137,6 +137,7 @@
             <e p="GamePlayerStats.cs" t="Include" />
             <e p="GameQuestion.cs" t="Include" />
             <e p="GameTheme.cs" t="Include" />
+            <e p="SetScoreWindow.cs" t="Include" />
             <e p="StreamVideo.cs" t="Include" />
             <e p="TaskScreen.cs" t="Include" />
           </e>

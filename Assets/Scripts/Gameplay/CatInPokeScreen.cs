@@ -25,9 +25,7 @@ public class CatInPokeScreen : MonoBehaviour
         foreach (var player in players)
         {
             var stat = Instantiate(_playerStatsTemplate, _container, false);
-
-            stat.Init(player);
-            stat.OnPlayerSelectedAction += _callback;
+            stat.Init(player, _callback);
 
             _playersList.Add(stat);
         }
@@ -38,11 +36,7 @@ public class CatInPokeScreen : MonoBehaviour
         gameObject.SetActive(false);
 
         foreach (var player in _playersList)
-        {
-            player.OnPlayerSelectedAction -= _callback;
-
             Destroy(player.gameObject);
-        }
 
         _playersList.Clear();
     }

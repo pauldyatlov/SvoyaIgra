@@ -21,7 +21,12 @@ public class Player
     public void UpdatePoints(int arg)
     {
         Points += arg;
+        OnPointsUpdateAction?.Invoke(this);
+    }
 
+    public void SetPoints(int arg)
+    {
+        Points = arg;
         OnPointsUpdateAction?.Invoke(this);
     }
 }
