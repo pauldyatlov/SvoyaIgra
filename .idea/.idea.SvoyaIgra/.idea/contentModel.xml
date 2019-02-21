@@ -7,123 +7,27 @@
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
         <e p="Question" t="Include">
-          <e p="05.08" t="Include">
+          <e p="2018-07-02 (office)" t="Include">
             <e p="3" t="Include">
-              <e p="хороший перевод песен" t="Include">
-                <e p="100.txt" t="Include" />
-              </e>
-            </e>
-          </e>
-          <e p="05.11" t="Include">
-            <e p="1" t="Include">
-              <e p="история" t="Include">
-                <e p="Новый текстовый документ.txt" t="Include" />
-              </e>
-              <e p="подвошные загадки" t="Include">
-                <e p="Новый текстовый документ.txt" t="Include" />
-              </e>
-            </e>
-            <e p="3" t="Include">
-              <e p="сложна" t="Include">
-                <e p="Новый текстовый документ.txt" t="Include" />
-              </e>
-            </e>
-            <e p="5" t="Include">
-              <e p="антонимы фильмы" t="Include">
-                <e p="Новый текстовый документ.txt" t="Include" />
-              </e>
-              <e p="игра престолов" t="Include">
-                <e p="Новый текстовый документ.txt" t="Include" />
-              </e>
-              <e p="репер или поэт" t="Include">
-                <e p="Новый текстовый документ.txt" t="Include" />
-              </e>
-            </e>
-          </e>
-          <e p="15.10" t="Include">
-            <e p="1" t="Include">
-              <e p="разомни мозги(нет)" t="Include">
-                <e p="вопросы.txt" t="Include" />
-              </e>
-            </e>
-            <e p="2" t="Include">
-              <e p="рус фильм по цитате" t="Include">
-                <e p="вопрос.txt" t="Include" />
-              </e>
-            </e>
-            <e p="3" t="Include">
-              <e p="пересказы" t="Include">
-                <e p="воп.txt" t="Include" />
-              </e>
-            </e>
-          </e>
-          <e p="2018-01-02 (office)" t="Include">
-            <e p="1" t="Include">
-              <e p="аббревиатуры" t="Include">
-                <e p="Новый текстовый документ.txt" t="Include" />
-              </e>
-              <e p="загадки" t="Include">
-                <e p="Новый текстовый документ.txt" t="Include" />
-              </e>
-            </e>
-            <e p="2" t="Include">
-              <e p="Школные вопросы" t="Include">
+              <e p="мировая кухня" t="Include">
                 <e p="Новый текстовый документ.txt" t="Include" />
               </e>
             </e>
             <e p="4" t="Include">
-              <e p="зоновские загадки" t="Include">
+              <e p="pereskaz" t="Include">
+                <e p="Новый текстовый документ.txt" t="Include" />
+              </e>
+              <e p="podvokh" t="Include">
                 <e p="Новый текстовый документ.txt" t="Include" />
               </e>
             </e>
             <e p="5" t="Include">
-              <e p="научные достижения" t="Include">
+              <e p="first openers" t="Include">
                 <e p="Новый текстовый документ.txt" t="Include" />
               </e>
             </e>
-          </e>
-          <e p="2019-19-01" t="Include">
-            <e p="4" t="Include">
-              <e p="Текстовые по сериалам" t="Include">
-                <e p="what.txt" t="Include" />
-              </e>
-            </e>
-            <e p="5" t="Include">
-              <e p="Молодежный сленг" t="Include">
-                <e p="what.txt" t="Include" />
-              </e>
-              <e p="Неприятные загадки" t="Include">
-                <e p="what.txt" t="Include" />
-              </e>
-            </e>
-          </e>
-          <e p="2019-26-01" t="Include">
-            <e p="1" t="Include">
-              <e p="арифметика" t="Include">
-                <e p="what.txt" t="Include" />
-              </e>
-              <e p="заблуждения" t="Include">
-                <e p="what.txt" t="Include" />
-              </e>
-            </e>
-            <e p="2" t="Include">
-              <e p="Симпсоны" t="Include">
-                <e p="Новый текстовый документ.txt" t="Include" />
-              </e>
-            </e>
-            <e p="3" t="Include">
-              <e p="Изобретатели" t="Include">
-                <e p="Новый текстовый документ.txt" t="Include" />
-              </e>
-              <e p="столицы" t="Include">
-                <e p="Новый текстовый документ.txt" t="Include" />
-              </e>
-              <e p="цитатник" t="Include">
-                <e p="Новый текстовый документ.txt" t="Include" />
-              </e>
-            </e>
-            <e p="4" t="Include">
-              <e p="мифы и легенды" t="Include">
+            <e p="6" t="Include">
+              <e p="artefacts" t="Include">
                 <e p="Новый текстовый документ.txt" t="Include" />
               </e>
             </e>
