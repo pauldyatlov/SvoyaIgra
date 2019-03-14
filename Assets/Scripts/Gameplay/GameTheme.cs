@@ -26,7 +26,7 @@ public class GameTheme : MonoBehaviour
         for (var i = 0; i < questions.Count; i++)
         {
             var index = i;
-            var instantiatedQuestion = Instantiate(_gameQuestionTemplate);
+            var instantiatedQuestion = Instantiate(_gameQuestionTemplate, _questionsContainer, false);
 
             _availableQuestions.Add(instantiatedQuestion);
             instantiatedQuestion.Init(questions[index].Price.ToString(), () =>
@@ -34,16 +34,12 @@ public class GameTheme : MonoBehaviour
                 _availableQuestions.Remove(instantiatedQuestion);
 
                 if (_availableQuestions.Count <= 0)
-                {
                     _onAvailableQuestionsEnd?.Invoke(this, round);
-                }
 
                 instantiatedQuestion.Close();
 
                 _taskScreen.Show(questions[index]);
             });
-
-            instantiatedQuestion.transform.SetParent(_questionsContainer, false);
         }
     }
 }

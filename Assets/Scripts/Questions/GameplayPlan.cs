@@ -6,6 +6,7 @@ using UnityEngine.Video;
 public class GameplayPlan : ScriptableObject
 {
     public List<RoundGameplayPlan> RoundsList;
+    public List<FinalQuestion> FinalQuestions;
 }
 
 [Serializable]
@@ -41,4 +42,12 @@ public class CatInPokeQuestion
 {
     public string Theme;
     public int Price;
+}
+
+[Serializable]
+public class FinalQuestion
+{
+    public string Theme;
+    public string Question;
+    public string Answer;
 }

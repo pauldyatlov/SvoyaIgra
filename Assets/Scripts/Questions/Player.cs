@@ -1,21 +1,49 @@
 ﻿using System;
-using System.Net.Sockets;
+using Newtonsoft.Json;
 
 public class Player
 {
     public string Name;
     public int Points;
 
-    public NetworkStream Stream;
+    public Matchmaker.Player Stream;
 
     public Action<Player> OnPointsUpdateAction;
+    public Action<string> OnNameChanged;
 
-    public Player(string name, NetworkStream stream)
+    public class PlayerMessage
     {
-        Name = name;
-        Points = 0;
+        public string SetName;
+        public string Answer;
+    }
 
+    public Player(Matchmaker.Player stream)
+    {
         Stream = stream;
+
+        OnNameChanged += newName =>
+            SendMessage(new QuizCommand { Command = "NameChanged", Parameter = newName });
+
+        OnPointsUpdateAction += player =>
+            SendMessage(new QuizCommand { Command = "PointsChanged", Parameter = player.Points.ToString() });
+
+        Points = 0;
+        OnPointsUpdateAction?.Invoke(this);
+        Name = $"Player {stream.Id}";
+        OnNameChanged?.Invoke(Name);
+
+        stream.MessageReceived += text =>
+        {
+            var message = JsonConvert.DeserializeObject<PlayerMessage>(text);
+
+            if (message.SetName != null) {
+                Name = message.SetName;
+                OnNameChanged?.Invoke(Name);
+            } else if (message.Answer != null)
+                SocketServer.OnPlayerAnswered?.Invoke(Name);
+        };
+
+        SocketServer.OnPlayerConnected?.Invoke(this);
     }
 
     public void UpdatePoints(int arg)
@@ -28,5 +56,10 @@ public class Player
     {
         Points = arg;
         OnPointsUpdateAction?.Invoke(this);
+    }
+
+    public void SendMessage(QuizCommand quizCommand)
+    {
+        Stream.SendMessage(JsonConvert.SerializeObject(quizCommand));
     }
 }

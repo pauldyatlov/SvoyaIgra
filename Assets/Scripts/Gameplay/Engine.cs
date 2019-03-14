@@ -2,10 +2,12 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.UI;
 
 public class Engine : MonoBehaviour
 {
     [SerializeField] private GameTheme _themeTemplate;
+    [SerializeField] private FinalRoundTheme _finalRoundTheme;
     [SerializeField] private RectTransform _placeholder;
     [SerializeField] private GameplayPlan _gameplayPlan;
 
@@ -13,6 +15,7 @@ public class Engine : MonoBehaviour
     [SerializeField] private RectTransform _playerStatsPlaceholder;
 
     [SerializeField] private SetScoreWindow _setScoreWindow;
+    [SerializeField] private Text _finalQuestion;
 
     public static event Action<Player> OnPlayerAnswering;
 
@@ -20,8 +23,9 @@ public class Engine : MonoBehaviour
         new Dictionary<Player, GamePlayerStats>();
 
     public static readonly List<Player> RegisteredPlayers = new List<Player>();
-
     private readonly Dictionary<GameTheme, int> _themesGameplayPlans = new Dictionary<GameTheme, int>();
+    private readonly List<FinalQuestion> _finalThemes = new List<FinalQuestion>();
+
     private int _currentRound;
 
     private void Awake()
@@ -44,7 +48,8 @@ public class Engine : MonoBehaviour
                 createdTheme.Init(_placeholder, theme.QuestionsList, theme.ThemeName, i);
                 createdTheme._onAvailableQuestionsEnd += OnAvailableQuestionsEndHandler;
 
-                if (i != 0) createdTheme.gameObject.SetActive(false);
+                if (i != 0)
+                    createdTheme.gameObject.SetActive(false);
             }
         }
 
@@ -66,6 +71,28 @@ public class Engine : MonoBehaviour
         {
             if (_themesGameplayPlans.Values.ElementAt(i) == _currentRound)
                 _themesGameplayPlans.Keys.ElementAt(i).gameObject.SetActive(true);
+        }
+
+        if (_currentRound >= _themesGameplayPlans.Keys.Count)
+        {
+            foreach (var theme in _gameplayPlan.FinalQuestions)
+            {
+                _finalThemes.Add(theme);
+
+                var themePanel = Instantiate(_finalRoundTheme, _placeholder);
+
+                themePanel.Show(theme, arg =>
+                {
+                    themePanel.gameObject.SetActive(false);
+                    _finalThemes.Remove(arg);
+
+                    if (_finalThemes.Count > 0)
+                        return;
+
+                    _finalQuestion.gameObject.SetActive(true);
+                    _finalQuestion.text = arg.Question;
+                });
+            }
         }
     }
 
@@ -118,7 +145,7 @@ public class Engine : MonoBehaviour
 
             player.SetPoints(intScore);
 
-            SocketServer.SendMessage(player.Stream, new QuizCommand
+            player.SendMessage(new QuizCommand
             {
                 Command = SocketServer.SetScore,
                 Parameter = score
