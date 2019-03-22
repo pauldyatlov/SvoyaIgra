@@ -10,6 +10,7 @@ public class Player
 
     public Action<Player> OnPointsUpdateAction;
     public Action<string> OnNameChanged;
+    public Action OnButtonPressed;
 
     public class PlayerMessage
     {
@@ -22,10 +23,10 @@ public class Player
         Stream = stream;
 
         OnNameChanged += newName =>
-            SendMessage(new QuizCommand { Command = "NameChanged", Parameter = newName });
+            SendMessage(new QuizCommand {Command = "NameChanged", Parameter = newName});
 
         OnPointsUpdateAction += player =>
-            SendMessage(new QuizCommand { Command = "PointsChanged", Parameter = player.Points.ToString() });
+            SendMessage(new QuizCommand {Command = "PointsChanged", Parameter = player.Points.ToString()});
 
         Points = 0;
         OnPointsUpdateAction?.Invoke(this);
@@ -36,11 +37,18 @@ public class Player
         {
             var message = JsonConvert.DeserializeObject<PlayerMessage>(text);
 
-            if (message.SetName != null) {
+            if (message.SetName != null)
+            {
                 Name = message.SetName;
                 OnNameChanged?.Invoke(Name);
-            } else if (message.Answer != null)
-                SocketServer.OnPlayerAnswered?.Invoke(Name);
+            }
+            else
+            {
+                if (message.Answer != null)
+                    SocketServer.OnPlayerAnswered?.Invoke(Name);
+
+                OnButtonPressed?.Invoke();
+            }
         };
 
         SocketServer.OnPlayerConnected?.Invoke(this);
@@ -58,8 +66,8 @@ public class Player
         OnPointsUpdateAction?.Invoke(this);
     }
 
-    public void SendMessage(QuizCommand quizCommand)
+    public void SendMessage(object message)
     {
-        Stream.SendMessage(JsonConvert.SerializeObject(quizCommand));
+        Stream.SendMessage(JsonConvert.SerializeObject(message));
     }
 }

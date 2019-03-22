@@ -103,6 +103,9 @@ public class TaskScreen : MonoBehaviour
         _timerLabel.text = MinTimer.ToString(CultureInfo.InvariantCulture);
 
         Engine.OnPlayerAnswering += HandlePlayerAnswering;
+
+        if (plan.Picture != null)
+            CanAnswerHandler();
     }
 
     private void HandlePlayerAnswering(Player arg)

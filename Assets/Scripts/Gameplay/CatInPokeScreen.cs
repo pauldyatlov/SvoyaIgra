@@ -25,7 +25,7 @@ public class CatInPokeScreen : MonoBehaviour
         foreach (var player in players)
         {
             var stat = Instantiate(_playerStatsTemplate, _container, false);
-            stat.Init(player, _callback);
+            stat.Init(player, _callback, null);
 
             _playersList.Add(stat);
         }

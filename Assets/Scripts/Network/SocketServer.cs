@@ -8,7 +8,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 public class QuizCommand
@@ -19,7 +18,6 @@ public class QuizCommand
 
 public interface IMatchmakerServer
 {
-
 }
 
 public class Matchmaker
@@ -58,6 +56,9 @@ public class Matchmaker
             _matchmaker = matchmaker;
         }
 
+        public void Kick() =>
+            _matchmaker.KickPlayer(this);
+
         public Action<string> MessageReceived;
 
         public void SendMessage(string data)
@@ -95,16 +96,21 @@ public class Matchmaker
 
         async void Send()
         {
-            try {
-                await _networkStream.WriteString(JsonConvert.SerializeObject(new {
-                    Message = new {
+            try
+            {
+                await _networkStream.WriteString(JsonConvert.SerializeObject(new
+                {
+                    Message = new
+                    {
                         target = ids.Count == 1
-                            ? (object)new { Id = ids.Single() }
-                            : (object)new { Ids = ids },
+                            ? (object) new {Id = ids.Single()}
+                            : (object) new {Ids = ids},
                         message
                     }
                 }));
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Debug.LogException(e);
             }
         }
@@ -121,21 +127,28 @@ public class Matchmaker
     }
 
     public void Broadcast(string message) =>
-        _ = _networkStream.WriteString(JsonConvert.SerializeObject(new {
-            Message = new {
+        _ = _networkStream.WriteString(JsonConvert.SerializeObject(new
+        {
+            Message = new
+            {
                 target = "Broadcast",
                 message
             }
         }));
 
+    public void KickPlayer(Player player) =>
+        _ = _networkStream.WriteString(JsonConvert.SerializeObject(new {KickPlayer = player.Id}));
+
     private async Task MainLoop()
     {
-        using (_networkStream = _tcpClient.GetStream()) {
+        using (_networkStream = _tcpClient.GetStream())
+        {
             await _networkStream.WriteString(@"{ ""Login"": ""SVOYAIGRA"" }");
 
             while (true)
             {
-                try {
+                try
+                {
                     var matchmakerMessage = await _networkStream.ReadString();
 
                     Debug.LogWarning("Message: " + matchmakerMessage);
@@ -145,27 +158,44 @@ public class Matchmaker
                     if (response == null)
                         throw new IOException("Oh shit");
 
-                    if (response.CurrentState != null) {
-                        foreach (var playerState in response.CurrentState) {
+                    if (response.CurrentState != null)
+                    {
+                        foreach (var playerState in response.CurrentState)
+                        {
                             var player = new Player(playerState.id, playerState.online, this);
+
                             Players.Add(player);
                             PlayerAdded?.Invoke(player);
                         }
-                    } else if (!string.IsNullOrEmpty(response.PlayerConnected)) {
+                    }
+                    else if (!string.IsNullOrEmpty(response.PlayerConnected))
+                    {
                         var player = new Player(response.PlayerConnected, true, this);
+
                         Players.Add(player);
                         PlayerAdded?.Invoke(player);
-                    } else if (!string.IsNullOrEmpty(response.PlayerDisconnected))
-                        Players.RemoveAll(x => x.Id == response.PlayerDisconnected);
-                    else if (response.PlayerMessage != null) {
+                    }
+                    else if (!string.IsNullOrEmpty(response.PlayerDisconnected))
+                    {
+                        var player = Players.FirstOrDefault(x => x.Id == response.PlayerDisconnected);
+
+                        Players.Remove(player);
+                        PlayerRemoved?.Invoke(player);
+                    }
+                    else if (response.PlayerMessage != null)
+                    {
                         var innerMessage = response.PlayerMessage.text.Replace("\\\"", "\"");
                         Debug.LogWarning("Inner message: " + innerMessage);
                         Players.Single(x => x.Id == response.PlayerMessage.id).MessageReceived?.Invoke(innerMessage);
                     }
-                } catch (IOException ioException) {
+                }
+                catch (IOException ioException)
+                {
                     Debug.LogError("Matchmaker has been disconnected: " + ioException.Message);
                     throw;
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     Debug.LogException(e);
                 }
             }
@@ -175,15 +205,13 @@ public class Matchmaker
 
 public static class SocketServer
 {
-    public const string PerformConnect = "PerformConnect";
-    public const string ConnectApproved = "ConnectApproved";
-    public const string MakeAnswer = "MakeAnswer";
     public const string CorrectAnswer = "CorrectAnswer";
     public const string WrongAnswer = "WrongAnswer";
     public const string SetScore = "SetPoints";
+    public const string KickPlayer = "KickPlayer";
 
     public static Action<Player> OnPlayerConnected;
-    public static Action<Player> OnPlayerDisconnected;
+    public static Action<Matchmaker.Player> OnPlayerDisconnected;
     public static Action<string> OnPlayerAnswered;
 
     private static TcpListener _listener;
@@ -191,109 +219,8 @@ public static class SocketServer
     public static async void Init()
     {
         var matchmaker = await Matchmaker.Create("139.162.199.78", 3013);
-        //var matchmaker = await Matchmaker.Create("127.0.0.1", 3013);
-
-        var players = matchmaker.Players.Select(x => new Player(x)).ToArray();
 
         matchmaker.PlayerAdded += player => _ = new Player(player);
-
-
-
-
-        return;
-
-        var tcpClient = new TcpClient();
-
-        tcpClient.Connect("localhost", 3013);
-
-        var stream = tcpClient.GetStream();
-        _ = HandleMatchmaker(stream);
-
-        await stream.WriteString(JsonUtility.ToJson(new { Login = (object)null }));
-        await Task.Delay(TimeSpan.FromSeconds(5));
-        await stream.WriteString("SUKO BIATCH");
-
-        _listener = new TcpListener(IPAddress.Any, 8888);
-        _listener.Start();
-
-        while (true)
-            _ = HandleClient(await _listener.AcceptTcpClientAsync());
-    }
-
-    private static async Task HandleMatchmaker(NetworkStream stream)
-    {
-        while (true)
-        {
-            var matchmakerMessage = await stream.ReadString();
-
-        }
-    }
-
-    private static async Task HandleClient(TcpClient client)
-    {
-        try {
-            Debug.Log("Client connected");
-
-            using (client) {
-                var stream = client.GetStream();
-
-                while (true)
-                    HandleAnswer(await stream.ReadString(), stream);
-            }
-        } catch (Exception e) {
-            Debug.LogError(e);
-        }
-    }
-
-    private static void HandleAnswer(string json, NetworkStream stream)
-    {
-        if (string.IsNullOrEmpty(json))
-        {
-//            var player = Engine.RegisteredPlayers.FirstOrDefault(x => x.Stream == stream);
-
-//            if (player == null)
-//                throw new Exception("[!] Unknown player disconnected");
-
-//            OnPlayerDisconnected?.Invoke(player);
-//
-//            throw new Exception($"[!] {player.Name} disconnected");
-        }
-
-        var action = JsonUtility.FromJson<QuizCommand>(json);
-        if (action == null)
-            throw new Exception("Action was not handled: " + action);
-
-        Debug.Log("Command received: " + action.Command);
-
-        switch (action.Command)
-        {
-            case PerformConnect:
-            {
-                Debug.Log("New player connected: " + action.Parameter);
-
-//                OnPlayerConnected?.Invoke(new Player(action.Parameter, stream));
-
-//            var firstOrDefault = Engine.RegisteredPlayers.FirstOrDefault(x => x.Name == action.Parameter);
-
-                SendMessage(stream, new QuizCommand
-                {
-                    Command = ConnectApproved,
-                    Parameter = action.Parameter,
-                });
-                break;
-            }
-            case MakeAnswer:
-            {
-                OnPlayerAnswered?.Invoke(action.Parameter);
-                break;
-            }
-        }
-    }
-
-    public static async void SendMessage(NetworkStream stream, QuizCommand message, Action callback = null)
-    {
-        await stream.WriteString(JsonUtility.ToJson(message));
-
-        callback?.Invoke();
+        matchmaker.PlayerRemoved += stream => OnPlayerDisconnected?.Invoke(stream);
     }
 }

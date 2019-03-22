@@ -73,26 +73,26 @@ public class Engine : MonoBehaviour
                 _themesGameplayPlans.Keys.ElementAt(i).gameObject.SetActive(true);
         }
 
-        if (_currentRound >= _themesGameplayPlans.Keys.Count)
+        if (_currentRound < _themesGameplayPlans.Keys.Count)
+            return;
+
+        foreach (var theme in _gameplayPlan.FinalQuestions)
         {
-            foreach (var theme in _gameplayPlan.FinalQuestions)
+            _finalThemes.Add(theme);
+
+            var themePanel = Instantiate(_finalRoundTheme, _placeholder);
+
+            themePanel.Show(theme, arg =>
             {
-                _finalThemes.Add(theme);
+                themePanel.gameObject.SetActive(false);
+                _finalThemes.Remove(arg);
 
-                var themePanel = Instantiate(_finalRoundTheme, _placeholder);
+                if (_finalThemes.Count > 0)
+                    return;
 
-                themePanel.Show(theme, arg =>
-                {
-                    themePanel.gameObject.SetActive(false);
-                    _finalThemes.Remove(arg);
-
-                    if (_finalThemes.Count > 0)
-                        return;
-
-                    _finalQuestion.gameObject.SetActive(true);
-                    _finalQuestion.text = arg.Question;
-                });
-            }
+                _finalQuestion.gameObject.SetActive(true);
+                _finalQuestion.text = arg.Question;
+            });
         }
     }
 
@@ -110,7 +110,7 @@ public class Engine : MonoBehaviour
         else
         {
             var stat = Instantiate(_playerStatsTemplate, _playerStatsPlaceholder, false);
-            stat.Init(player, OnPlayerSelected);
+            stat.Init(player, OnPlayerSelected, OnPlayerKicked);
 
             RegisteredPlayers.Add(player);
             PlayerViews.Add(player, stat);
@@ -119,15 +119,24 @@ public class Engine : MonoBehaviour
         player.OnPointsUpdateAction?.Invoke(player);
     }
 
-    private void PlayerDisconnectedHandler(Player player)
+    private void PlayerDisconnectedHandler(Matchmaker.Player stream)
     {
+        var player = RegisteredPlayers.FirstOrDefault(x => x.Stream == stream);
+
+        if (player == null)
+        {
+            Debug.LogError("Player to delete is null");
+            return;
+        }
+
         if (!PlayerViews.ContainsKey(player))
         {
             Debug.LogError("RegisteredPlayersWithViews does not contain key " + player.Name + "!");
             return;
         }
 
-        PlayerViews[player].SetCanvasGroup(false);
+        PlayerViews[player].Close();
+        PlayerViews.Remove(player);
     }
 
     private void OnPlayerAnsweredHandler(string nickname)
@@ -139,17 +148,14 @@ public class Engine : MonoBehaviour
     {
         _setScoreWindow.Show(player, score =>
         {
-            int intScore;
-
-            int.TryParse(score, out intScore);
+            int.TryParse(score, out var intScore);
 
             player.SetPoints(intScore);
-
-            player.SendMessage(new QuizCommand
-            {
-                Command = SocketServer.SetScore,
-                Parameter = score
-            });
         });
+    }
+
+    private void OnPlayerKicked(Player player)
+    {
+        player.Stream.Kick();
     }
 }
